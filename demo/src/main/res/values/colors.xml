@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- *************************************************************************************** -->
+    <!-- General -->
+    <!-- *************************************************************************************** -->
+
+    <color name="primary">#F8991E</color>
+    <color name="primary_dark">#f15a23</color>
+    <color name="accent">#5F933F</color>
+
+    <color name="primary_text_light">#FFFFFF</color>
+    <color name="primary_text_dark">#DE000000</color>
+
+    <color name="secondary_text_light">#B3FFFFFF</color>
+    <color name="secondary_text_dark">#8A000000</color>
+
+    <color name="primary_background">#efeef3</color>
+    <color name="primary_background_dark">@color/primary</color>
+
+
+    <!-- *************************************************************************************** -->
+    <!-- Tabs -->
+    <!-- *************************************************************************************** -->
+
+    <color name="tabs_bg">#5F933F</color>
+    <color name="tabs_bg_selected">#3e5e2a</color>
+
+</resources>
