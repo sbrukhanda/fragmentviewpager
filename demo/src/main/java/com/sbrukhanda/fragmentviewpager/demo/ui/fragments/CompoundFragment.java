@@ -1,4 +1,19 @@
-package com.superviewpager.demo.ui.fragments;
+/*
+ * Copyright (C) 2016 Serhiy Brukhanda
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.sbrukhanda.fragmentviewpager.demo.ui.fragments;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -9,11 +24,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.superviewpager.adapters.FragmentPagerAdapter;
-import com.superviewpager.adapters.FragmentStatePagerAdapter;
-import com.superviewpager.FragmentVisibilityListener;
-import com.superviewpager.SuperViewPager;
-import com.superviewpager.demo.R;
+import com.sbrukhanda.fragmentviewpager.adapters.FragmentPagerAdapter;
+import com.sbrukhanda.fragmentviewpager.adapters.FragmentStatePagerAdapter;
+import com.sbrukhanda.fragmentviewpager.FragmentVisibilityListener;
+import com.sbrukhanda.fragmentviewpager.FragmentViewPager;
+import com.sbrukhanda.fragmentviewpager.demo.R;
 
 /**
  * @author Serhiy Brukhanda <http://lnkd.in/dMuBjh8>
@@ -31,7 +46,7 @@ public class CompoundFragment extends Fragment implements FragmentVisibilityList
     // Fields
     // =============================================================================================
 
-    private SuperViewPager  mFragmentsPager;
+    private FragmentViewPager mFragmentsPager;
     private TabLayout       mFragmentsTab;
 
     private String mName;
@@ -43,7 +58,7 @@ public class CompoundFragment extends Fragment implements FragmentVisibilityList
 
     // *********************************************************************************************
     public CompoundFragment() {
-        // Required empty public constructor
+        // Mandatory empty public constructor
     }
 
     // *********************************************************************************************
@@ -67,7 +82,7 @@ public class CompoundFragment extends Fragment implements FragmentVisibilityList
             mName = arguments.getString(EXTRA_FRAGMENT_NAME);
         }
 
-        mFragmentsPager = (SuperViewPager) fragment.findViewById(R.id.pager_sub_fragments);
+        mFragmentsPager = (FragmentViewPager) fragment.findViewById(R.id.pager_sub_fragments);
         mFragmentsPager.setOffscreenPageLimit(1);
 
         PagerAdapter pagerAdapter = new FragmentStateAdapter(getChildFragmentManager());

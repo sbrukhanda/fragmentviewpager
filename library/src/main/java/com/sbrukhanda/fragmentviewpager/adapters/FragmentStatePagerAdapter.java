@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package com.sbrukhanda.fragmentviewpager.adapters;
 
-package com.superviewpager.adapters;
-
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,32 +25,30 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 /**
- * A modified copy of the {@link android.support.v4.app.FragmentPagerAdapter}, which retains its
+ * A modified copy of the {@link android.support.v4.app.FragmentStatePagerAdapter}, which retains its
  * original behaviour, but incorporates some additions and changes to its methods. <p />
  *
- * Firstly, method {@link android.support.v4.app.FragmentPagerAdapter#getItem(int)} was replaced
+ * Firstly, method {@link android.support.v4.app.FragmentStatePagerAdapter#getItem(int)} was replaced
  * with a more appropriately named {@link #instantiateFragment(int)} method. <p />
  *
  * Secondly, method {@link #getFragment(int)} was added in order to allow access to the underlying
  * mechanism of stored {@code Fragment}s. <p />
  *
- * Lastly, method {@link #makeFragmentName(FragmentPagerAdapter, long)} was modified in order to
- * not interfere with the original {@link android.support.v4.app.FragmentPagerAdapter} and simplify
- * its parameters (mainly for being able to call it from {@link #getFragment(int)}). <p />
- *
- * <b>Note:</b> The Support-v4 v23.1.1 {@link android.support.v4.app.FragmentPagerAdapter}'s source
- * was used as a base.
+ * <b>Note:</b> The Support-v4 v23.1.1 {@link android.support.v4.app.FragmentStatePagerAdapter}'s
+ * source was used as a base.
  *
  * @author Serhiy Brukhanda <http://lnkd.in/dMuBjh8>
  */
-public abstract class FragmentPagerAdapter extends PagerAdapter
+public abstract class FragmentStatePagerAdapter extends PagerAdapter
 {
     // =============================================================================================
     // Constants
     // =============================================================================================
 
-    private static final String  TAG   = FragmentPagerAdapter.class.getSimpleName();
+    private static final String  TAG   = FragmentStatePagerAdapter.class.getSimpleName();
     private static final boolean DEBUG = true;
 
 
@@ -59,8 +57,11 @@ public abstract class FragmentPagerAdapter extends PagerAdapter
     // =============================================================================================
 
     private final FragmentManager mFragmentManager;
-    private FragmentTransaction mCurTransaction     = null;
-    private Fragment            mCurrentPrimaryItem = null;
+    private FragmentTransaction mCurTransaction = null;
+
+    private ArrayList<Fragment.SavedState> mSavedState         = new ArrayList<Fragment.SavedState>();
+    private ArrayList<Fragment>            mFragments          = new ArrayList<Fragment>();
+    private Fragment                       mCurrentPrimaryItem = null;
 
 
     // =============================================================================================
@@ -68,7 +69,7 @@ public abstract class FragmentPagerAdapter extends PagerAdapter
     // =============================================================================================
 
     // *********************************************************************************************
-    public FragmentPagerAdapter(FragmentManager fm) {
+    public FragmentStatePagerAdapter(FragmentManager fm) {
         mFragmentManager = fm;
     }
 
@@ -82,13 +83,11 @@ public abstract class FragmentPagerAdapter extends PagerAdapter
      * Returns the {@code Fragment} associated with the specified position.
      *
      * @param position The position of the {@code Fragment} to fetch.
-     * @return The {@code Fragment} associated with the specified position, else {@code null}.
+     * @return The {@code Fragment} associated with the specified position if such exists, else
+     * {@code null}.
      */
     public Fragment getFragment(int position) {
-        long itemId = getItemId(position);
-        String name = makeFragmentName(this, itemId);
-        Fragment fragment = mFragmentManager.findFragmentByTag(name);
-        return fragment;
+        return ((mFragments.size() > position) ? mFragments.get(position) : null);
     }
 
     /**
@@ -102,26 +101,41 @@ public abstract class FragmentPagerAdapter extends PagerAdapter
     // *********************************************************************************************
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
+
+        // -----------------------------------------------------------------------------------------
+        // If we already have this item instantiated, there is nothing to do.  This can happen when
+        // we are restoring the entire pager from its saved state, where the fragment manager has
+        // already taken care of restoring the fragments we previously had instantiated.
+        // -----------------------------------------------------------------------------------------
+
+        Fragment existingFragment = getFragment(position);
+        if (existingFragment != null) {
+            return existingFragment;
+        }
+
+        // -----------------------------------------------------------------------------------------
+        // Else, continue with normal flow.
+        // -----------------------------------------------------------------------------------------
+
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
 
-        final long itemId = getItemId(position);
-
-        Fragment fragment = getFragment(position);
-        if (fragment != null) {
-            if (DEBUG) Log.v(TAG, "Attaching item #" + itemId + ": f=" + fragment);
-            mCurTransaction.attach(fragment);
-        } else {
-            fragment = instantiateFragment(position);
-            if (DEBUG) Log.v(TAG, "Adding item #" + itemId + ": f=" + fragment);
-            mCurTransaction.add(container.getId(), fragment,
-                makeFragmentName(this, itemId));
+        Fragment fragment = instantiateFragment(position);
+        if (DEBUG) Log.v(TAG, "Adding item #" + position + ": f=" + fragment);
+        if (mSavedState.size() > position) {
+            Fragment.SavedState fss = mSavedState.get(position);
+            if (fss != null) {
+                fragment.setInitialSavedState(fss);
+            }
         }
-        if (fragment != mCurrentPrimaryItem) {
-            fragment.setMenuVisibility(false);
-            fragment.setUserVisibleHint(false);
+        while (mFragments.size() <= position) {
+            mFragments.add(null);
         }
+        fragment.setMenuVisibility(false);
+        fragment.setUserVisibleHint(false);
+        mFragments.set(position, fragment);
+        mCurTransaction.add(container.getId(), fragment);
 
         return fragment;
     }
@@ -129,12 +143,20 @@ public abstract class FragmentPagerAdapter extends PagerAdapter
     // *********************************************************************************************
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
+        Fragment fragment = (Fragment)object;
+
         if (mCurTransaction == null) {
             mCurTransaction = mFragmentManager.beginTransaction();
         }
-        if (DEBUG) Log.v(TAG, "Detaching item #" + getItemId(position) + ": f=" + object
+        if (DEBUG) Log.v(TAG, "Removing item #" + position + ": f=" + object
             + " v=" + ((Fragment)object).getView());
-        mCurTransaction.detach((Fragment)object);
+        while (mSavedState.size() <= position) {
+            mSavedState.add(null);
+        }
+        mSavedState.set(position, mFragmentManager.saveFragmentInstanceState(fragment));
+        mFragments.set(position, null);
+
+        mCurTransaction.remove(fragment);
     }
 
     // *********************************************************************************************
@@ -173,30 +195,56 @@ public abstract class FragmentPagerAdapter extends PagerAdapter
     // *********************************************************************************************
     @Override
     public Parcelable saveState() {
-        return null;
+        Bundle state = null;
+        if (mSavedState.size() > 0) {
+            state = new Bundle();
+            Fragment.SavedState[] fss = new Fragment.SavedState[mSavedState.size()];
+            mSavedState.toArray(fss);
+            state.putParcelableArray("states", fss);
+        }
+        for (int i=0; i<mFragments.size(); i++) {
+            Fragment f = mFragments.get(i);
+            if (f != null && f.isAdded()) {
+                if (state == null) {
+                    state = new Bundle();
+                }
+                String key = "f" + i;
+                mFragmentManager.putFragment(state, key, f);
+            }
+        }
+        return state;
     }
 
     // *********************************************************************************************
     @Override
     public void restoreState(Parcelable state, ClassLoader loader) {
-        // Nothing needed
-    }
-
-    /**
-     * Return a unique identifier for the item at the given position.
-     *
-     * <p>The default implementation returns the given position.
-     * Subclasses should override this method if the positions of items can change.</p>
-     *
-     * @param position Position within this adapter
-     * @return Unique identifier for the item at position
-     */
-    public long getItemId(int position) {
-        return position;
-    }
-
-    // *********************************************************************************************
-    private static String makeFragmentName(FragmentPagerAdapter adapter, long id) {
-        return "android:super-switcher:" + adapter.hashCode() + ":" + id;
+        if (state != null) {
+            Bundle bundle = (Bundle)state;
+            bundle.setClassLoader(loader);
+            Parcelable[] fss = bundle.getParcelableArray("states");
+            mSavedState.clear();
+            mFragments.clear();
+            if (fss != null) {
+                for (int i=0; i<fss.length; i++) {
+                    mSavedState.add((Fragment.SavedState)fss[i]);
+                }
+            }
+            Iterable<String> keys = bundle.keySet();
+            for (String key: keys) {
+                if (key.startsWith("f")) {
+                    int index = Integer.parseInt(key.substring(1));
+                    Fragment f = mFragmentManager.getFragment(bundle, key);
+                    if (f != null) {
+                        while (mFragments.size() <= index) {
+                            mFragments.add(null);
+                        }
+                        f.setMenuVisibility(false);
+                        mFragments.set(index, f);
+                    } else {
+                        Log.w(TAG, "Bad fragment at key " + key);
+                    }
+                }
+            }
+        }
     }
 }

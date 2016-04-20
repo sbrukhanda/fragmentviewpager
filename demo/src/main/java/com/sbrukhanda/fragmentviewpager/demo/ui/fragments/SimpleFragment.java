@@ -1,4 +1,19 @@
-package com.superviewpager.demo.ui.fragments;
+/*
+ * Copyright (C) 2016 Serhiy Brukhanda
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.sbrukhanda.fragmentviewpager.demo.ui.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,10 +22,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.superviewpager.FragmentVisibilityListener;
-import com.superviewpager.demo.R;
-import com.superviewpager.demo.WorkThread;
-import com.superviewpager.demo.ui.activities.MainActivity;
+import com.sbrukhanda.fragmentviewpager.FragmentVisibilityListener;
+import com.sbrukhanda.fragmentviewpager.demo.R;
+import com.sbrukhanda.fragmentviewpager.demo.WorkThread;
+import com.sbrukhanda.fragmentviewpager.demo.ui.activities.MainActivity;
 
 /**
  * @author Serhiy Brukhanda <http://lnkd.in/dMuBjh8>
@@ -31,7 +46,7 @@ public class SimpleFragment extends Fragment implements FragmentVisibilityListen
     private TextView mNameLabel;
 
     private String mName;
-    private WorkThread mWorkThread;
+    //private WorkThread mWorkThread;
 
 
     // =============================================================================================
@@ -40,7 +55,7 @@ public class SimpleFragment extends Fragment implements FragmentVisibilityListen
 
     // *********************************************************************************************
     public SimpleFragment() {
-        // Required empty public constructor
+        // Mandatory empty public constructor
     }
 
     // *********************************************************************************************
@@ -77,8 +92,8 @@ public class SimpleFragment extends Fragment implements FragmentVisibilityListen
             ((MainActivity) getActivity()).logMessage(mName + " is visible.");
         }
 
-        mWorkThread = new WorkThread(mName);
-        mWorkThread.start();
+        //mWorkThread = new WorkThread(mName);
+        //mWorkThread.start();
     }
 
     // *********************************************************************************************
@@ -88,7 +103,7 @@ public class SimpleFragment extends Fragment implements FragmentVisibilityListen
             ((MainActivity) getActivity()).logMessage(mName + " is invisible.");
         }
 
-        mWorkThread.cancel();
-        mWorkThread = null;
+        //mWorkThread.cancel();
+        //mWorkThread = null;
     }
 }

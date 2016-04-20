@@ -1,4 +1,19 @@
-package com.superviewpager.demo.ui.activities;
+/*
+ * Copyright (C) 2016 Serhiy Brukhanda
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.sbrukhanda.fragmentviewpager.demo.ui.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -9,12 +24,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import com.superviewpager.adapters.FragmentPagerAdapter;
-import com.superviewpager.adapters.FragmentStatePagerAdapter;
-import com.superviewpager.SuperViewPager;
-import com.superviewpager.demo.R;
-import com.superviewpager.demo.ui.fragments.CompoundFragment;
-import com.superviewpager.demo.ui.fragments.SimpleFragment;
+import com.sbrukhanda.fragmentviewpager.adapters.FragmentPagerAdapter;
+import com.sbrukhanda.fragmentviewpager.adapters.FragmentStatePagerAdapter;
+import com.sbrukhanda.fragmentviewpager.FragmentViewPager;
+import com.sbrukhanda.fragmentviewpager.demo.R;
+import com.sbrukhanda.fragmentviewpager.demo.ui.fragments.CompoundFragment;
+import com.sbrukhanda.fragmentviewpager.demo.ui.fragments.SimpleFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +50,7 @@ public class MainActivity extends AppCompatActivity
     // Fields
     // =============================================================================================
 
-    private SuperViewPager  mFragmentsPager;
+    private FragmentViewPager mFragmentsPager;
     private TabLayout       mFragmentsTab;
 
     private TextView     mLogsLabel;
@@ -59,7 +74,7 @@ public class MainActivity extends AppCompatActivity
 
         mLogsLabel = (TextView) findViewById(R.id.lbl_logs);
 
-        mFragmentsPager = (SuperViewPager) findViewById(R.id.pager_fragments);
+        mFragmentsPager = (FragmentViewPager) findViewById(R.id.pager_fragments);
         mFragmentsPager.setOffscreenPageLimit(1);
 
         PagerAdapter pagerAdapter = new FragmentStateAdapter(getSupportFragmentManager());
@@ -71,8 +86,8 @@ public class MainActivity extends AppCompatActivity
 
     // *********************************************************************************************
     @Override
-    public void onResume() {
-        super.onResume();
+    protected void onResumeFragments() {
+        super.onResumeFragments();
         mFragmentsPager.notifyPagerVisible();
     }
 

@@ -23,7 +23,7 @@
         app:tabBackground="@drawable/selector_tab_layout_bg"
         app:tabMaxWidth="0dp" />
 
-    <com.superviewpager.SuperViewPager
+    <com.sbrukhanda.fragmentviewpager.FragmentViewPager
         android:id="@+id/pager_fragments"
         android:layout_width="match_parent"
         android:layout_height="0dp"
