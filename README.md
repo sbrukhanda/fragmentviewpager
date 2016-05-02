@@ -24,7 +24,8 @@ compile 'com.sbrukhanda.fragmentviewpager:fragmentviewpager:1.0.0'
 License
 =======
 
-Copyright 2016 Serhiy Brukhanda
+```
+  Copyright 2016 Serhiy Brukhanda
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -37,3 +38,4 @@ Copyright 2016 Serhiy Brukhanda
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
+```
