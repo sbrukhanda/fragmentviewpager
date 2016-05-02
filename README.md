@@ -32,8 +32,8 @@ Usage
   </li>
   <li>
     Set FragmentViewPager's adapter.
-    
-    **_Note:_** The provided PagerAdapter should be an instance of com.sbrukhanda.fragmentviewpager.adapters.FragmentPagerAdapter or com.sbrukhanda.fragmentviewpager.adapters.FragmentStatePagerAdapter, or else callbacks for the visibility state of Fragment pages wont work.
+    </ br>
+    <b>Note:</b> The provided PagerAdapter should be an instance of com.sbrukhanda.fragmentviewpager.adapters.FragmentPagerAdapter or com.sbrukhanda.fragmentviewpager.adapters.FragmentStatePagerAdapter, or else callbacks for the visibility state of Fragment pages wont work.
   </li>
 </ol>
 
