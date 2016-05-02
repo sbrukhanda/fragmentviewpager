@@ -26,46 +26,41 @@ compile 'com.sbrukhanda.fragmentviewpager:fragmentviewpager:1.0.0'
 Usage
 --------
 
-<ol>
-  <li>
-    Attach FragmentViewPager programmatically or via XML to an Activity or Fragment, as you would with native ViewPager.
-  </li>
-  <li>
-    Set FragmentViewPager's adapter.<p />
-    
-    <b>Note:</b> The provided PagerAdapter should be an instance of <b>com.sbrukhanda.fragmentviewpager.adapters.FragmentPagerAdapter</b> or <b>com.sbrukhanda.fragmentviewpager.adapters.FragmentStatePagerAdapter</b>, or else callbacks for the visibility state of Fragment pages wont work.
-  </li>
-  <li>
-    Override <b>onResumeFragments()</b> method of the hosting Activity and call <b>notifyPagerVisible()</b> inside it. <p />
-    
-    Example:
-    ```java
-    private FragmentViewPager mFragmentsPager;
+1) Attach FragmentViewPager programmatically or via XML to an Activity or Fragment, as you would with native ViewPager.
 
-    @Override
-    public void onResumeFragments() {
-        super.onResumeFragments();
-        mFragmentsPager.notifyPagerVisible();
-    }
-    ```
-  </li>
-</ol>
+2) Set FragmentViewPager's adapter.
+ 
+**_Note:_** The provided PagerAdapter should be an instance of **com.sbrukhanda.fragmentviewpager.adapters.FragmentPagerAdapter** or **com.sbrukhanda.fragmentviewpager.adapters.FragmentStatePagerAdapter**, or else callbacks for the visibility state of Fragment pages wont work.
+
+3) Override <b>onResumeFragments()</b> method of the hosting Activity and call <b>notifyPagerVisible()</b> inside it. <p />
+
+Example:
+
+```java
+private FragmentViewPager mFragmentsPager;
+
+@Override
+public void onResumeFragments() {
+    super.onResumeFragments();
+    mFragmentsPager.notifyPagerVisible();
+}
+```
 
 4) Override **onPause()** method of the hosting Activity and call **notifyPagerInvisible()** inside it. 
 
-    Example:
+Example:
   
-    ```java
-    private FragmentViewPager mFragmentsPager;
-    
-    @Override
-    public void onPause() {
-        super.onPause();
-        mFragmentsPager.notifyPagerInvisible();
-    }
-    ```
+```java
+private FragmentViewPager mFragmentsPager;
 
-5 Implement **FragmentVisibilityListener** on all Fragment pages that you wish to receive callbacks for their visibility state.
+@Override
+public void onPause() {
+    super.onPause();
+    mFragmentsPager.notifyPagerInvisible();
+}
+```
+
+5) Implement **FragmentVisibilityListener** on all Fragment pages that you wish to receive callbacks for their visibility state.
 
 Done! :-)
 
