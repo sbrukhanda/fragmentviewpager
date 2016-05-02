@@ -26,7 +26,10 @@ compile 'com.sbrukhanda.fragmentviewpager:fragmentviewpager:1.0.0'
 Usage
 --------
 
+1. Attach FragmentViewPager programmatically or via XML to an Activity or Fragment, as you would with native ViewPager.
 
+2. Set FragmentViewPager's adapter.
+**_Note:_** The provided PagerAdapter should be an instance of com.sbrukhanda.fragmentviewpager.adapters.FragmentPagerAdapter or com.sbrukhanda.fragmentviewpager.adapters.FragmentStatePagerAdapter, or else callbacks for the visibility state of Fragment pages wont work.
 
 License
 =======
