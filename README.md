@@ -53,21 +53,21 @@ Usage
 
 
 
-4. Override **onPause()** method of the hosting Activity and call **notifyPagerInvisible()** inside it. 
+4 Override **onPause()** method of the hosting Activity and call **notifyPagerInvisible()** inside it. 
 
-Example:
+  Example:
+  
+  ```java
+  private FragmentViewPager mFragmentsPager;
+  
+  @Override
+  public void onPause() {
+      super.onPause();
+      mFragmentsPager.notifyPagerInvisible();
+  }
+  ```
 
-```java
-private FragmentViewPager mFragmentsPager;
-
-@Override
-public void onPause() {
-    super.onPause();
-    mFragmentsPager.notifyPagerInvisible();
-}
-```
-
-5. Implement **FragmentVisibilityListener** on all Fragment pages that you wish to receive callbacks for their visibility state.
+5 Implement **FragmentVisibilityListener** on all Fragment pages that you wish to receive callbacks for their visibility state.
 
 Done! :-)
 
