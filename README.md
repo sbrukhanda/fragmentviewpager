@@ -51,10 +51,7 @@ public void onResume() {
 }
 ```
 
-4) Override **onPause()** method of the hosting Activity and call **notifyPagerInvisible()** inside it. 
-
-Example:
-  
+4) Override `onPause()` of the hosting `Activity` or `Fragment` and call `notifyPagerInvisible()`: 
 ```java
 private FragmentViewPager mFragmentsPager;
 
@@ -65,9 +62,18 @@ public void onPause() {
 }
 ```
 
-5) Implement **FragmentVisibilityListener** on all Fragment pages that you wish to receive callbacks for their visibility state.
+5) Implement `FragmentVisibilityListener` on all `Fragment` pages that you wish to receive callbacks for their visibility state.
 
-Done! :-)
+You are ready to go :-)
+
+Nested FragmentViewPager
+--------
+
+Although, it's not a good idea to have multiple levels of `ViewPager` inside your views, sometimes theres no other way around it. `FragmentViewPager` supports an infinite amount of levels with this slight adjustment:
+
+--------
+
+If for some reason, you are facing difficulties in using `FragmentViewPager` inside your project, I would advice you to check the demo subproject for a working sample.
 
 License
 =======
@@ -79,7 +85,7 @@ License
   you may not use this file except in compliance with the License.
   You may obtain a copy of the License at
 
-      http://www.apache.org/licenses/LICENSE-2.0
+        http://www.apache.org/licenses/LICENSE-2.0
   
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
