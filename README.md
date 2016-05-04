@@ -30,7 +30,7 @@ Usage
 
 2) Set `FragmentViewPager`'s adapter. It should be an instance of `com.sbrukhanda.fragmentviewpager.adapters.FragmentPagerAdapter` or `com.sbrukhanda.fragmentviewpager.adapters.FragmentStatePagerAdapter`, or else callbacks for the visibility state of Fragment pages wont work correctly. This classes are carbon copies of the repsective classes from the support library, with just a few tweaks that allow `FragmentViewPager` to do its magic ;-)
 
-3) Override `onResumeFragments()` of the hosting `Activity` and call `notifyPagerVisible()`:
+3) Override `Activity.onResumeFragments()` and call `FragmentViewPager.notifyPagerVisible()`:
 ```java
 private FragmentViewPager mFragmentsPager;
 
@@ -38,9 +38,10 @@ private FragmentViewPager mFragmentsPager;
 public void onResumeFragments() {
     super.onResumeFragments();
     mFragmentsPager.notifyPagerVisible();
+    ...
 }
 ```
-or `onResume()` of the hosting `Fragment` and call `notifyPagerVisible()`:
+or `Fragment.onResume()` and call `FragmentViewPager.notifyPagerVisible()`:
 ```java
 private FragmentViewPager mFragmentsPager;
 
@@ -48,10 +49,11 @@ private FragmentViewPager mFragmentsPager;
 public void onResume() {
     super.onResume();
     mFragmentsPager.notifyPagerVisible();
+    ...
 }
 ```
 
-4) Override `onPause()` of the hosting `Activity` or `Fragment` and call `notifyPagerInvisible()`: 
+4) Override `onPause()` of the hosting `Activity` or `Fragment` and call `FragmentViewPager.notifyPagerInvisible()`: 
 ```java
 private FragmentViewPager mFragmentsPager;
 
@@ -59,6 +61,7 @@ private FragmentViewPager mFragmentsPager;
 public void onPause() {
     super.onPause();
     mFragmentsPager.notifyPagerInvisible();
+    ...
 }
 ```
 
@@ -69,8 +72,30 @@ You are ready to go :-)
 Nested FragmentViewPager
 --------
 
-Although, it's not a good idea to have multiple levels of `ViewPager` inside your views, sometimes theres no other way around it. `FragmentViewPager` supports an infinite amount of levels with this slight adjustment:
+Although, it's not a good idea to have multiple levels of `ViewPager` inside your views, sometimes theres no other way around it. `FragmentViewPager` supports an infinite amount of levels by following this simple rule:
 
+Call `FragmentViewPager.notifyPagerVisible()` inside `FragmentVisibilityListener.onFragmentVisible()` of your `Fragment` page that hosts the nested `FragmentViewPager`:
+```java
+private FragmentViewPager mNestedFragmentsPager;
+
+@Override
+public void onFragmentVisible() {
+    mNestedFragmentsPager.notifyPagerVisible();
+    ...
+}
+```
+and `FragmentViewPager.notifyPagerInvisible()` inside `FragmentVisibilityListener.onFragmentInvisible()` of your `Fragment` page that hosts the nested `FragmentViewPager`:
+```java
+private FragmentViewPager mNestedFragmentsPager;
+
+@Override
+public void onFragmentVisible() {
+    mNestedFragmentsPager.notifyPagerInvisible();
+    ...
+}
+```
+
+Having trouble 
 --------
 
 If for some reason, you are facing difficulties in using `FragmentViewPager` inside your project, I would advice you to check the demo subproject for a working sample.
