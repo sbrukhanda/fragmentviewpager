@@ -95,10 +95,15 @@ public void onFragmentVisible() {
 }
 ```
 
-Having trouble 
+Controlling paging
 --------
 
-If for some reason, you are facing difficulties in using `FragmentViewPager` inside your project, I would advice you to check the demo subproject for a working sample.
+`FragmentViewPager`'s paging can be disabled, i.e. user swipe events will be ignored, but all other means of changing its pages will still function as expected. This functionality is exposed through `FragmentViewPager.isPagingEnabled()` and `FragmentViewPager.setPagingEnabled()`.
+
+Having trouble using `FragmentViewPager` ?
+--------
+
+If for some reason, you were unable to integrate `FragmentViewPager` into your project, I urge you to check the demo subproject accompanying `FragmentViewPager` for a working sample. Should that not help you, I will be glad to help you with your issue (I would advice searching issue tracker before opening a potentially duplicate issue).
 
 License
 =======
