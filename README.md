@@ -3,6 +3,7 @@ Fragment ViewPager
 
 [![Release](https://img.shields.io/badge/jCenter-1.0.0-brightgreen.svg)](https://bintray.com/sbrukhanda/maven/FragmentViewPager)
 [![GitHub license](https://img.shields.io/badge/license-Apache%20Version%202.0-blue.svg)](https://github.com/sbrukhanda/fragmentviewpager/blob/master/LICENSE.txt)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-fragmentviewpager-green.svg?style=true)](https://android-arsenal.com/details/1/3842)
 
 An extended `ViewPager` that has the below features:
 - allows its `Fragment` pages to get notified when they are actually visible/invisible to the user
