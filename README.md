@@ -95,7 +95,7 @@ and `FragmentViewPager.notifyPagerInvisible()` inside `FragmentVisibilityListene
 private FragmentViewPager mNestedFragmentsPager;
 
 @Override
-public void onFragmentVisible() {
+public void onFragmentInvisible() {
     mNestedFragmentsPager.notifyPagerInvisible();
     ...
 }
